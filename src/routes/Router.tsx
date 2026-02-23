@@ -4,6 +4,8 @@ import  { lazy } from 'react';
 import { Navigate, createBrowserRouter } from "react-router";
 import Loadable from 'src/layouts/full/shared/loadable/Loadable';
 import Categories from 'src/Pages/Categories';
+import Home from 'src/Pages/Home';
+import EmailVerified from 'src/views/auth/authforms/EmailVerified';
 
 
 
@@ -30,8 +32,8 @@ const Router = [
     path: '/',
     element: <FullLayout />,
     children: [
-      { path: '/', exact: true, element: <Dashboard/> },
-      { path: '/Categories', exact: true, element: <Categories/> },
+      { path: '/dashboard', exact: true, element: <Dashboard /> },
+      { path: '/categories', exact: true, element: <Categories /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
@@ -39,14 +41,15 @@ const Router = [
     path: '/',
     element: <BlankLayout />,
     children: [
+      { path: '/home', exact: true, element: <Home /> },
       { path: '/auth/login', element: <Login /> },
       { path: '/auth/register', element: <Register /> },
+      { path: '/auth/email-verified', element: <EmailVerified /> },
       { path: '404', element: <Error /> },
       { path: '/auth/404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
-  }
-  ,
+  },
 ];
 
 const router = createBrowserRouter(Router)

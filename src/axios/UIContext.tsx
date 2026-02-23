@@ -1,26 +1,24 @@
-// src/axios/UIContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Alert } from 'flowbite-react';
-import Spinner from '../views/spinner/Spinner'; 
+import Spinner from '../views/spinner/Spinner';
 
-type AlertType = { type: 'success' | 'error'; message: string };
-type FormErrorsType = { [key: string]: string[] };
+type AlertType = { type: 'success' | 'error'; message: string } | null;
 
 type UIContextType = {
   loader: boolean;
-  setLoader: (value: boolean) => void;
-  alert: AlertType | null;
-  setAlert: (value: AlertType | null) => void;
-  formErrors: FormErrorsType;
-  setFormErrors: (value: FormErrorsType) => void;
+  setLoader: React.Dispatch<React.SetStateAction<boolean>>;
+  alert: AlertType;
+  setAlert: React.Dispatch<React.SetStateAction<AlertType>>;
+  formErrors: { [key: string]: string };
+  setFormErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
 };
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export const UIProvider = ({ children }: { children: ReactNode }) => {
-  const [loader, setLoader] = useState(false);
-  const [alert, setAlert] = useState<AlertType | null>(null);
-  const [formErrors, setFormErrors] = useState<FormErrorsType>({});
+  const [loader, setLoader] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertType>(null);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (alert) {
@@ -41,7 +39,10 @@ export const UIProvider = ({ children }: { children: ReactNode }) => {
 
       {alert && (
         <div className="fixed top-5 right-5 z-50 cursor-pointer" onClick={() => setAlert(null)}>
-          <Alert color={alert.type === 'error' ? 'failure' : 'success'} onDismiss={() => setAlert(null)}>
+          <Alert
+            color={alert.type === 'error' ? 'failure' : 'success'}
+            onDismiss={() => setAlert(null)}
+          >
             {alert.message}
           </Alert>
         </div>

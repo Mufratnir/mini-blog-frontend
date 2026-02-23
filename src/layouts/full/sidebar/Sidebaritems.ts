@@ -29,7 +29,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Dashboard',
         icon: 'solar:widget-add-line-duotone',
         id: uniqueId(),
-        url: '/',
+        url: '/dashboard',
       },
       {
         name: 'Categories',
@@ -53,33 +53,26 @@ const SidebarContent: MenuItem[] = [
             name: 'Homepage',
             id: uniqueId(),
             url: 'https://spike-react-tailwind-main.netlify.app/frontend-pages/homepage',
-            
           },
           {
             name: 'About Us',
             id: uniqueId(),
             url: 'https://spike-react-tailwind-main.netlify.app/frontend-pages/aboutus',
-            
           },
           {
             name: 'Blog',
             id: uniqueId(),
             url: 'https://spike-react-tailwind-main.netlify.app/frontend-pages/blog',
-            
           },
           {
             name: 'Contact Us',
             id: uniqueId(),
             url: 'https://spike-react-tailwind-main.netlify.app/frontend-pages/contact',
-            
           },
         ],
       },
     ],
   },
-  
-
-  
 ];
 
 export default SidebarContent;

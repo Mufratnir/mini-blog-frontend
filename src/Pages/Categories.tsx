@@ -3,7 +3,6 @@ import MainTable from '../components/tables/MainTable';
 import { Label, TextInput, Select, Button } from 'flowbite-react';
 import { apiRequest } from '../axios/api';
 import { useUI } from '../axios/UIContext'; 
-import { set } from 'lodash';
 
 const Categories = () => {
   const { loader, setLoader, alert, setAlert, formErrors, setFormErrors } = useUI();
@@ -60,21 +59,26 @@ const Categories = () => {
      const method = editingId !== null ? 'PUT' : 'POST';
      const url = editingId !== null ? `/categories/${editingId}` : '/categories';
 
-     const response: any = await apiRequest({
-       method,
-       url,
-       data: formData,
-     });
+     try {
+       const response: any = await apiRequest({
+         method,
+         url,
+         data: formData,
+       });
 
-     setLoader(false);
+       setLoader(false);
 
-     if (response?.errors) {
-       // Laravel validation errors: { name: ["The name has already been taken."] }
-       setFormErrors(response.errors);
-     } else if (response?.message) {
-       setAlert({ type: 'success', message: response.message });
-       handleFormClose();
-       fetchCategories();
+       if (response?.errors) {
+         // Laravel validation errors: { name: ["The name has already been taken."] }
+         setFormErrors(response.errors);
+       } else if (response?.message) {
+         setAlert({ type: 'success', message: response.message });
+         handleFormClose();
+         fetchCategories();
+       }
+     } catch (error) {
+       setLoader(false);
+       setAlert({ type: 'failure', message: 'An error occurred while submitting the form.' });
      }
    };
 
@@ -92,27 +96,29 @@ const handleEdit = (index: number) => {
   const handleUpdate = async () => {
     if (!editingId) return;
 
-    try {
-      const res: any = await apiRequest(
-        {
-          method: 'PUT',
-          url: `/categories/${editingId}`,
-          data: formData,
-        },
-        // setLoader,
-        // setAlert,
-        // setFormErrors,
-      );
+    setFormErrors({});
+    setLoader(true);
 
-      if (res.success !== false) {
-        // setAlert({ message: 'Category updated successfully', type: 'success' });
-        // setShowForm(false);
+    try {
+      const res: any = await apiRequest({
+        method: 'PUT',
+        url: `/categories/${editingId}`,
+        data: formData,
+      });
+
+      setLoader(false);
+
+      if (res?.errors) {
+        setFormErrors(res.errors);
+      } else if (res?.message) {
+        setAlert({ type: 'success', message: res.message });
         setEditingId(null);
+        handleFormClose();
         fetchCategories(); // refresh the table
       }
     } catch (error) {
-      console.error('Update error:', error);
-      // setAlert({ message: 'Failed to update category', type: 'failure' });
+      setLoader(false);
+      setAlert({ type: 'failure', message: 'Failed to update category' });
     }
   };
 const handleDelete = async (index: number) => {
@@ -120,23 +126,24 @@ const handleDelete = async (index: number) => {
   const confirmDelete = window.confirm('Are you sure you want to delete this category?');
   if (!confirmDelete) return;
 
+  setLoader(true);
   try {
-    const res: any = await apiRequest(
-      {
-        method: 'DELETE',
-        url: `/categories/${category.id}`,
-      },
-      // setLoader,
-      // setAlert,
-    );
+    const res: any = await apiRequest({
+      method: 'DELETE',
+      url: `/categories/${category.id}`,
+    });
 
-    if (res.success !== false) {
-      // setAlert({ message: 'Category deleted successfully', type: 'success' });
+    setLoader(false);
+
+    if (res?.message) {
+      setAlert({ type: 'success', message: res.message });
       fetchCategories(); // refresh the table
+    } else {
+      setAlert({ type: 'failure', message: 'Failed to delete category' });
     }
   } catch (error) {
-    console.error('Delete error:', error);
-    // setAlert({ message: 'Failed to delete category', type: 'failure' });
+    setLoader(false);
+    setAlert({ type: 'failure', message: 'Failed to delete category' });
   }
 };
 
@@ -144,6 +151,7 @@ const handleDelete = async (index: number) => {
     setIsFormOpen(false);
     setEditingId(null);
     setFormData({ name: '', status: 'active' });
+    setFormErrors({});
   };
 
   return (
@@ -192,7 +200,7 @@ const handleDelete = async (index: number) => {
                 </Select>
               </div>
               <div className="col-span-12 flex gap-3 mt-4">
-                <Button onClick={handleSubmit}>{editingId ? 'Update' : 'Submit'}</Button>
+                <Button onClick={editingId ? handleUpdate : handleSubmit}>{editingId ? 'Update' : 'Submit'}</Button>
                 <Button color="error" onClick={handleFormClose}>
                   Cancel
                 </Button>
