@@ -50,7 +50,7 @@ const AuthRegister = () => {
         setAlert,
       });
 
-      // ✅ Backend validation errors
+      
       if (response?.errors) {
         const formattedErrors: { [key: string]: string } = {};
         Object.keys(response.errors).forEach((key) => {
@@ -60,11 +60,11 @@ const AuthRegister = () => {
         return;
       }
 
-      // ✅ Backend success or other message
+    
       if (response?.message) {
         setAlert({
           type: 'success',
-          message: response.message, // backend message show করবে
+          message: response.message,
         });
       }
 
@@ -77,7 +77,6 @@ const AuthRegister = () => {
         navigate('/');
       }
     } catch (error: any) {
-      // ✅ যদি backend 500 বা unexpected error দেয়
       setAlert({
         type: 'error',
         message: error?.response?.data?.message || 'Something went wrong. Please try again.',
@@ -90,7 +89,7 @@ const AuthRegister = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <Label htmlFor="username" value="Username" />
+        <Label htmlFor="Name">Name</Label>
         <TextInput
           id="username"
           type="text"
@@ -103,7 +102,7 @@ const AuthRegister = () => {
       </div>
 
       <div className="mb-4">
-        <Label htmlFor="email" value="Email" />
+        <Label htmlFor="email">Email</Label>
         <TextInput
           id="email"
           type="email"
@@ -116,7 +115,7 @@ const AuthRegister = () => {
       </div>
 
       <div className="mb-4">
-        <Label htmlFor="password" value="Password" />
+        <Label htmlFor="password">Password</Label>
         <TextInput
           id="password"
           type="password"
@@ -129,7 +128,7 @@ const AuthRegister = () => {
       </div>
 
       <div className="mb-6">
-        <Label htmlFor="password_confirmation" value="Confirm Password" />
+        <Label htmlFor="password_confirmation">Confirm Password</Label>
         <TextInput
           id="password_confirmation"
           type="password"

@@ -6,6 +6,8 @@ import Loadable from 'src/layouts/full/shared/loadable/Loadable';
 import Categories from 'src/Pages/Categories';
 import Home from 'src/Pages/Home';
 import EmailVerified from 'src/views/auth/authforms/EmailVerified';
+import ForgotPass from 'src/views/auth/authforms/ForgotPass';
+import ResetPass from 'src/views/auth/authforms/ResetPass';
 
 
 
@@ -16,10 +18,6 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 // Dashboard
 const Dashboard = Loadable(lazy(() => import('../views/dashboards/Dashboard')));
 
-// utilities
-
-// icons
-const Solar = Loadable(lazy(() => import("../views/icons/Solar")));
 
 // authentication
 const Login = Loadable(lazy(() => import('../views/auth/login/Login')));
@@ -45,6 +43,8 @@ const Router = [
       { path: '/auth/login', element: <Login /> },
       { path: '/auth/register', element: <Register /> },
       { path: '/auth/email-verified', element: <EmailVerified /> },
+      { path: '/auth/forgot-password', element: <ForgotPass /> },
+      { path: '/auth/reset-password', element: <ResetPass /> },
       { path: '404', element: <Error /> },
       { path: '/auth/404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },

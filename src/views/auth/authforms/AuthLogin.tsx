@@ -1,5 +1,5 @@
 import { Button, Label, TextInput, HelperText } from 'flowbite-react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { apiRequest } from '../../../axios/api';
 import { useUI } from '../../../axios/UIContext';
@@ -53,7 +53,7 @@ const AuthLogin = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <Label htmlFor="email" value="Email" />
+        <Label htmlFor="email" >Email</Label>
         <TextInput
           id="email"
           name="email"
@@ -67,7 +67,7 @@ const AuthLogin = () => {
       </div>
 
       <div className="mb-4">
-        <Label htmlFor="password" value="Password" />
+        <Label htmlFor="password">Password</Label>
         <TextInput
           id="password"
           name="password"
@@ -79,7 +79,9 @@ const AuthLogin = () => {
         />
         {formErrors.password && <HelperText color="failure">{formErrors.password}</HelperText>}
       </div>
-
+      <Link to={'/auth/forgot-password'} className="text-primary text-sm font-medium">
+        Forgot Password ?
+      </Link>
       <div className="flex justify-between my-5">
         <Button type="submit" color={'primary'} className="w-full bg-primary text-white">
           Login
