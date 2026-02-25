@@ -11,6 +11,11 @@
     "postinstall": "flowbite-react patch"
   },
   "dependencies": {
+    "@lexical/history": "^0.40.0",
+    "@lexical/link": "^0.40.0",
+    "@lexical/list": "^0.40.0",
+    "@lexical/react": "^0.40.0",
+    "@lexical/rich-text": "^0.40.0",
     "@svgr/rollup": "8.1.0",
     "@tabler/icons-react": "^2.39.0",
     "apexcharts": "3.48.0",
@@ -19,6 +24,7 @@
     "date-fns": "^4.1.0",
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.11.7",
+    "lexical": "^0.40.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "prop-types": "^15.7.2",

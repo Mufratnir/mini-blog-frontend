@@ -37,7 +37,7 @@ const AuthLogin = () => {
       }
 
       if (response?.data.token) {
-        localStorage.setItem('auth', JSON.stringify({ token: response.data.token }));
+        localStorage.setItem('auth', JSON.stringify({ token: response.data.token, role: response.data.user.role }));
         setAlert({ type: 'success', message: response.message || 'Login successful' });
         navigate('/home');
       } else {

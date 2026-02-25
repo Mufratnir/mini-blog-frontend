@@ -7,7 +7,7 @@ import {
   TableHeadCell,
   TableRow,
 } from 'flowbite-react';
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import SearchBar from '../SearchBar';
 import Pagination from '../Pagination';
@@ -27,12 +27,13 @@ type Props = {
   titleColumnLabel?: string;
   handleEditClick: (index: number) => void;
   handleDeleteClick: (index: number) => void;
-
+  handleToggleStatus?: (index: number) => void;
   searchValue?: string;
   onSearchChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   currentPage?: number;
   lastPage?: number;
   onPageChange?: (page: number) => void;
+  showRole?: boolean;
 };
 
 const MainTable = ({
@@ -44,19 +45,27 @@ const MainTable = ({
   titleColumnLabel,
   handleEditClick,
   handleDeleteClick,
-
+  handleToggleStatus,
   searchValue,
   onSearchChange,
   currentPage,
   lastPage,
   onPageChange,
+  showRole = true,
 }: Props) => {
   const getStatusStyle = (status: string) => {
     switch (status) {
-      case 'Active':
+      case 'active':
+      case 'approved':
         return 'border-green-500 text-green-600';
-      case 'InActive':
+
+      case 'inactive':
+      case 'pending':
         return 'border-yellow-500 text-yellow-600';
+
+      case 'rejected':
+        return 'border-red-500 text-red-600';
+
       default:
         return 'border-gray-400 text-gray-600';
     }
@@ -81,14 +90,15 @@ const MainTable = ({
 
   return (
     <>
-      {onSearchChange && <SearchBar value={searchValue  || ''} onChange={onSearchChange}/>}
+      {onSearchChange && <SearchBar value={searchValue || ''} onChange={onSearchChange} />}
       <div className="rounded-xl shadow-md bg-white p-6 w-full">
         <div className="flex justify-between items-center">
           <h5 className="text-lg font-semibold">{title}</h5>
-
-          <Button size="sm" color="primary" onClick={onButtonClick}>
-            {buttonText}
-          </Button>
+          <div className="flex gap-2">
+            <Button size="sm" color="primary" onClick={onButtonClick}>
+              {buttonText}
+            </Button>
+          </div>
         </div>
         {/* Table */}
         <div className="mt-4 ">
@@ -98,9 +108,9 @@ const MainTable = ({
                 {titleColumnLabel ?? (showImage ? 'Product / Title' : 'Title')}
               </TableHeadCell>
               <TableHeadCell>Status</TableHeadCell>
+              {showRole && <TableHeadCell>Role</TableHeadCell>}
               <TableHeadCell className="flex justify-end pe-6">Action</TableHeadCell>
             </TableHead>
-
             <TableBody>
               {data.length > 0 ? (
                 data.map((item, index) => (
@@ -126,17 +136,25 @@ const MainTable = ({
                         className={`px-3 py-1 text-xs font-medium rounded-full border ${getStatusStyle(
                           item.status,
                         )}`}
+                        onClick={() => handleToggleStatus?.(index)}
                       >
                         {item.status}
                       </span>
                     </TableCell>
+                    {showRole && (
+                      <TableCell>
+                        <span className="px-3 py-1 text-xs font-medium rounded-full border ">
+                          {item.role}
+                        </span>
+                      </TableCell>
+                    )}
 
                     <TableCell className="flex justify-end pe-6 relative">
                       {openMenuIndex === index && (
                         <div className="action-menu py-2 shadow-md bg-white rounded-2xl absolute right-15 top-6 z-10">
                           <div
                             className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100"
-                            onClick={() => handleEditClick(index)}
+                            onClick={() => handleEditClick(index, item.id)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

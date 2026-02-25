@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import MainTable from '../components/tables/MainTable';
 import { Label, TextInput, Select, Button } from 'flowbite-react';
-import { apiRequest } from '../axios/api';
-import { useUI } from '../axios/UIContext'; 
+import { apiRequest } from 'src/axios/api';
+import { useUI } from 'src/axios/UIContext';
+import MainTable from 'src/components/tables/MainTable';
+
 
 const Categories = () => {
   const { loader, setLoader, alert, setAlert, formErrors, setFormErrors } = useUI();
@@ -69,7 +70,6 @@ const Categories = () => {
        setLoader(false);
 
        if (response?.errors) {
-         // Laravel validation errors: { name: ["The name has already been taken."] }
          setFormErrors(response.errors);
        } else if (response?.message) {
          setAlert({ type: 'success', message: response.message });
@@ -78,7 +78,7 @@ const Categories = () => {
        }
      } catch (error) {
        setLoader(false);
-       setAlert({ type: 'failure', message: 'An error occurred while submitting the form.' });
+       setAlert({ type: 'error', message: 'An error occurred while submitting the form.' });
      }
    };
 
@@ -118,7 +118,7 @@ const handleEdit = (index: number) => {
       }
     } catch (error) {
       setLoader(false);
-      setAlert({ type: 'failure', message: 'Failed to update category' });
+      setAlert({ type: 'error', message: 'Failed to update category' });
     }
   };
 const handleDelete = async (index: number) => {
@@ -139,11 +139,11 @@ const handleDelete = async (index: number) => {
       setAlert({ type: 'success', message: res.message });
       fetchCategories(); // refresh the table
     } else {
-      setAlert({ type: 'failure', message: 'Failed to delete category' });
+      setAlert({ type: 'error', message: 'Failed to delete category' });
     }
   } catch (error) {
     setLoader(false);
-    setAlert({ type: 'failure', message: 'Failed to delete category' });
+    setAlert({ type: 'error', message: 'Failed to delete category' });
   }
 };
 
@@ -170,6 +170,7 @@ const handleDelete = async (index: number) => {
         currentPage={currentPage}
         lastPage={lastPage}
         onPageChange={(p) => setCurrentPage(p)}
+        showRole={false}
       />
 
       {isFormOpen && (

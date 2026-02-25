@@ -35,13 +35,13 @@ const SidebarContent: MenuItem[] = [
         name: 'Categories',
         icon: 'solar:screencast-2-line-duotone',
         id: uniqueId(),
-        url: '/Categories',
+        url: '/categories',
       },
       {
-        name: 'All Bloggers',
+        name: 'All Users',
         icon: 'solar:chart-line-duotone',
         id: uniqueId(),
-        url: '/AllBloggers',
+        url: '/user',
       },
 
       {
