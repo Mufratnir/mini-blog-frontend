@@ -35,6 +35,7 @@ export const apiRequest = async <T = any,>({
   params,
   setLoader,
   setAlert,
+  setFormErrors,
 }: {
   method: AxiosRequestConfig['method'];
   url: string;
@@ -42,6 +43,7 @@ export const apiRequest = async <T = any,>({
   params?: any;
   setLoader?: (value: boolean) => void;
   setAlert?: (alert: AlertType | null) => void;
+  setFormErrors?: (errors: Record<string, string>) => void;
 }): Promise<T | { success: true; errors?: any }> => {
   try {
     if (setLoader) setLoader(true);
@@ -59,10 +61,15 @@ export const apiRequest = async <T = any,>({
     if (setLoader) setLoader(false);
     const message = error.response?.data?.message || 'Network error';
     if (setAlert) setAlert({ type: 'error', message });
+
+    if (setFormErrors && error.response?.data?.errors) {
+      const formattedErrors: { [key: string]: string } = {};
+      Object.keys(error.response.data.errors).forEach((key) => {
+        formattedErrors[key] = error.response.data.errors[key][0];
+      });
+      setFormErrors(formattedErrors);
+    }
+
     return { success: false, errors: error.response?.data || { general: message } };
   }
 };
-
-
-
-

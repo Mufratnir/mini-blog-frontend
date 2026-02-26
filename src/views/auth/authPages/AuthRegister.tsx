@@ -1,5 +1,5 @@
 import { Button, Label, TextInput, HelperText } from 'flowbite-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useUI } from 'src/axios/UIContext';
 import { apiRequest } from 'src/axios/api';
@@ -48,6 +48,7 @@ const AuthRegister = () => {
         data,
         setLoader,
         setAlert,
+        setFormErrors,
       });
 
       
@@ -61,21 +62,17 @@ const AuthRegister = () => {
       }
 
     
-      if (response?.message) {
-        setAlert({
-          type: 'success',
-          message: response.message,
-        });
-      }
-
-      if (response?.user) {
+    console.log(response?.message)
+      if (response?.data.user) {
         setUsername('');
         setEmail('');
         setPassword('');
         setPasswordConfirmation('');
         setFormErrors({});
-        navigate('/');
+        navigate('/auth/verify-email', { state: { email } });
+        
       }
+     
     } catch (error: any) {
       setAlert({
         type: 'error',
@@ -84,8 +81,8 @@ const AuthRegister = () => {
     } finally {
       setLoader(false);
     }
+    
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
@@ -147,6 +144,7 @@ const AuthRegister = () => {
       </Button>
     </form>
   );
+  
 };
 
 export default AuthRegister;

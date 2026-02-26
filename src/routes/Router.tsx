@@ -1,16 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import  { lazy } from 'react';
-import { Navigate, createBrowserRouter } from "react-router";
+import { lazy } from 'react';
+import { Navigate, createBrowserRouter } from 'react-router';
 import Loadable from 'src/layouts/full/shared/loadable/Loadable';
 import Categories from 'src/views/Pages/dashboards/Categories';
 import User from 'src/views/Pages/dashboards/User';
 import Home from 'src/views/Pages/Home';
-import EmailVerified from 'src/views/auth/authforms/EmailVerified';
-import ForgotPass from 'src/views/auth/authforms/ForgotPass';
-import ResetPass from 'src/views/auth/authforms/ResetPass';
-
-
+import EmailVerified from 'src/views/auth/authPages/EmailVerified';
+import ForgotPass from 'src/views/auth/authPages/ForgotPass';
+import ResetPass from 'src/views/auth/authPages/ResetPass';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -19,12 +17,12 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 // Dashboard
 const Dashboard = Loadable(lazy(() => import('../views/Pages/dashboards/Dashboard')));
 
-
 // authentication
 const Login = Loadable(lazy(() => import('../views/auth/login/Login')));
 const Register = Loadable(lazy(() => import('../views/auth/register/Register')));
 const Error = Loadable(lazy(() => import('../views/auth/error/Error')));
-
+import VerifyEmail from '../views/auth/authPages/VerifyEmail';
+import ResetPassEmail from 'src/views/auth/authPages/ResetPassEmail';
 
 const Router = [
   {
@@ -45,6 +43,8 @@ const Router = [
       { path: '/auth/login', element: <Login /> },
       { path: '/auth/register', element: <Register /> },
       { path: '/auth/email-verified', element: <EmailVerified /> },
+      { path: '/auth/verify-email', element: <VerifyEmail /> },
+      { path: '/auth/reset-passemail', element: <ResetPassEmail /> },
       { path: '/auth/forgot-password', element: <ForgotPass /> },
       { path: '/auth/reset-password', element: <ResetPass /> },
       { path: '404', element: <Error /> },
@@ -54,6 +54,6 @@ const Router = [
   },
 ];
 
-const router = createBrowserRouter(Router)
+const router = createBrowserRouter(Router);
 
 export default router;

@@ -1,12 +1,10 @@
-
-import FullLogo from "src/layouts/full/shared/logo/FullLogo";
-import AuthLogin from "../authforms/AuthLogin";
-import { Link } from "react-router";
-
+import FullLogo from 'src/layouts/full/shared/logo/FullLogo';
+import AuthLogin from '../authPages/AuthLogin';
+import { Link } from 'react-router';
 
 const Login = () => {
   return (
-    <div  className="relative overflow-hidden h-screen">
+    <div className="relative overflow-hidden h-screen">
       <div className="flex h-full justify-center items-center px-4">
         <div className="rounded-xl shadow-md bg-white dark:bg-darkgray p-6 w-full md:w-[420px] border-none">
           <div className="flex flex-col gap-2 p-0 w-full">
