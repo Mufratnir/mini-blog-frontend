@@ -24,14 +24,51 @@ const Error = Loadable(lazy(() => import('../views/auth/error/Error')));
 import VerifyEmail from '../views/auth/authPages/VerifyEmail';
 import ResetPassEmail from 'src/views/auth/authPages/ResetPassEmail';
 
+/* ================= AUTH CHECK ================= */
+
+const isAuthenticated = () => {
+  return !!localStorage.getItem('token');
+};
+
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  return isAuthenticated() ? children : <Navigate to="/auth/login" />;
+};
+
+const PublicRoute = ({ children }: { children: JSX.Element }) => {
+  return !isAuthenticated() ? children : <Navigate to="/dashboard" />;
+};
+
+/* ================= ROUTES ================= */
+
 const Router = [
   {
     path: '/',
     element: <FullLayout />,
     children: [
-      { path: '/dashboard', exact: true, element: <Dashboard /> },
-      { path: '/categories', exact: true, element: <Categories /> },
-      { path: '/user', exact: true, element: <User /> },
+      {
+        path: '/dashboard',
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/categories',
+        element: (
+          <ProtectedRoute>
+            <Categories />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/user',
+        element: (
+          <ProtectedRoute>
+            <User />
+          </ProtectedRoute>
+        ),
+      },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
@@ -39,14 +76,63 @@ const Router = [
     path: '/',
     element: <BlankLayout />,
     children: [
-      { path: '/home', exact: true, element: <Home /> },
-      { path: '/auth/login', element: <Login /> },
-      { path: '/auth/register', element: <Register /> },
-      { path: '/auth/email-verified', element: <EmailVerified /> },
-      { path: '/auth/verify-email', element: <VerifyEmail /> },
-      { path: '/auth/reset-passemail', element: <ResetPassEmail /> },
-      { path: '/auth/forgot-password', element: <ForgotPass /> },
-      { path: '/auth/reset-password', element: <ResetPass /> },
+      { path: '/home', element: <Home /> },
+      {
+        path: '/auth/login',
+        element: (
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/register',
+        element: (
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/email-verified',
+        element: (
+          <PublicRoute>
+            <EmailVerified />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/verify-email',
+        element: (
+          <PublicRoute>
+            <VerifyEmail />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/reset-passemail',
+        element: (
+          <PublicRoute>
+            <ResetPassEmail />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/forgot-password',
+        element: (
+          <PublicRoute>
+            <ForgotPass />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: '/auth/reset-password',
+        element: (
+          <PublicRoute>
+            <ResetPass />
+          </PublicRoute>
+        ),
+      },
       { path: '404', element: <Error /> },
       { path: '/auth/404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },

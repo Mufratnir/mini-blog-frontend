@@ -1,10 +1,20 @@
+import { Button, Dropdown, DropdownItem } from 'flowbite-react';
+import { Icon } from '@iconify/react';
+import user1 from '/src/assets/images/profile/user-1.jpg';
+import { Link, useNavigate } from 'react-router';
+import { useUI } from 'src/axios/UIContext';
 
-import { Button, Dropdown, DropdownItem } from "flowbite-react";
-import { Icon } from "@iconify/react";
-import user1 from "/src/assets/images/profile/user-1.jpg";
-import { Link } from "react-router";
 
 const Profile = () => {
+  const { setAlert } = useUI();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setAlert({ type: 'success', message: 'Logout successful' });
+    navigate('/auth/login');
+  };
+
   return (
     <div className="relative group/menu">
       <Dropdown
@@ -13,17 +23,10 @@ const Profile = () => {
         dismissOnClick={false}
         renderTrigger={() => (
           <span className="h-10 w-10 hover:text-primary hover:bg-lightprimary rounded-full flex justify-center items-center cursor-pointer group-hover/menu:bg-lightprimary group-hover/menu:text-primary">
-            <img
-              src={user1}
-              alt="logo"
-              height="35"
-              width="35"
-              className="rounded-full"
-            />
+            <img src={user1} alt="logo" height="35" width="35" className="rounded-full" />
           </span>
         )}
       >
-
         <DropdownItem
           as={Link}
           to="#"
@@ -49,7 +52,13 @@ const Profile = () => {
           My Task
         </DropdownItem>
         <div className="p-3 pt-0">
-        <Button as={Link}  size={'sm'}  to="/auth/login" className="mt-2 border border-primary text-primary bg-transparent hover:bg-lightprimary outline-none focus:outline-none">Logout</Button>
+          <Button
+            size={'sm'}
+            onClick={handleLogout}
+            className="mt-2 border border-primary text-primary bg-transparent hover:bg-lightprimary outline-none focus:outline-none"
+          >
+            Logout
+          </Button>
         </div>
       </Dropdown>
     </div>
